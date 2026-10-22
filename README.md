@@ -7,10 +7,8 @@
 
 ---
 
-## 👥 Authors & Team
-- **Nakshatra Lalwani** (Roll No: `125B1F066`) — *Project Lead, ML Architecture, Predictive Modeling & Web Development*
-- **Siya Dubey** (Roll No: `125B1F065`) — *Exploratory Data Analysis, Feature Engineering & Statistical Hypothesis Testing*
-- **Pawan Koshti** (Roll No: `125B1F079`) — *Data Acquisition, Preprocessing & Research Documentation*
+## 👤 Project Author & Developer
+- **Nakshatra Lalwani** (Roll No: `125B1F066`) — *Project Lead, ML Architecture, Predictive Modeling & Full-Stack Web Development*
 
 ---
 
@@ -106,5 +104,5 @@ Needhub_stat/
 ---
 
 ## 📜 Academic Integrity & Citation
-This project was designed, analyzed, and synthesized by Nakshatra Lalwani, Siya Dubey, and Pawan Koshti at Pimpri Chinchwad College of Engineering (PCCoE), Pune.
+This project was designed, analyzed, modeled, and developed by **Nakshatra Lalwani** (Roll No: 125B1F066) at Pimpri Chinchwad College of Engineering (PCCoE), Pune.
 All rights reserved © 2026 NeedHub.

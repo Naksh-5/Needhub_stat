@@ -192,9 +192,7 @@ story.append(Spacer(1, 15))
 
 student_data = [
     [Paragraph("<b>Name</b>", styles["Normal"]), Paragraph("<b>PRN</b>", styles["Normal"])],
-    [Paragraph("Nakshatra Lalwani", styles["Normal"]), Paragraph("125B1F066", styles["Normal"])],
-    [Paragraph("Siya Dubey", styles["Normal"]), Paragraph("125B1F065", styles["Normal"])],
-    [Paragraph("Pawan Koshti", styles["Normal"]), Paragraph("125B1F079", styles["Normal"])]
+    [Paragraph("Nakshatra Lalwani", styles["Normal"]), Paragraph("125B1F066", styles["Normal"])]
 ]
 student_table = Table(student_data, colWidths=[270, 185])
 student_table.setStyle(TableStyle([

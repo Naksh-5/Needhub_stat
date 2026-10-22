@@ -27,7 +27,7 @@ cells = []
 cells.append(make_cell("markdown", """# NeedHub: Machine Learning & Empirical Analytics for Campus Peer-to-Peer Marketplace
 ### *Predicting User Monetization Propensity, Need Intensity Forecasting & K-Means Persona Stratification*
 
-**Authors:** Nakshatra Lalwani (125B1F066), Siya Dubey (125B1F065), Pawan Koshti (125B1F079)  
+**Author:** Nakshatra Lalwani (Roll No: 125B1F066)  
 **Institution:** Pimpri Chinchwad College of Engineering (PCCoE), Pune  
 **Department:** Information Technology | Division A | Batch A4  
 **Course:** Data Science Laboratory (VSEC Mini-Project)  

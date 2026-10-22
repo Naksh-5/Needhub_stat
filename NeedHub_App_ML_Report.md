@@ -10,8 +10,6 @@
 | Name | PRN |
 | :--- | :---: |
 | **Nakshatra Lalwani** | **125B1F066** |
-| **Siya Dubey** | **125B1F065** |
-| **Pawan Koshti** | **125B1F079** |
 
 * **Branch:** Information Technology  
 * **Division:** A  
