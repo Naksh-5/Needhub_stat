@@ -1,0 +1,1822 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeedHub™ AI & Data Science Intelligence Platform</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            400: '#818cf8',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                        },
+                        teal: {
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                        },
+                        dark: {
+                            900: '#0b0f19',
+                            800: '#111827',
+                            750: '#151d30',
+                            700: '#1f2937',
+                            600: '#374151',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #f3f4f6;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(21, 29, 48, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.2);
+        }
+        .neon-border {
+            box-shadow: 0 0 20px -5px rgba(99, 102, 241, 0.3);
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6366f1;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 50%, #2dd4bf 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Glow Header -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-brand-500/10 blur-[130px] rounded-full pointer-events-none z-0"></div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-gray-800/80 px-6 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('overview')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-teal-400 p-[2px] flex items-center justify-center shadow-lg shadow-brand-500/20">
+                    <div class="w-full h-full bg-dark-900 rounded-[10px] flex items-center justify-center">
+                        <i data-lucide="layers" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="font-extrabold text-xl tracking-tight text-white">Need<span class="text-indigo-400">Hub</span></span>
+                        <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-500/20 text-indigo-300 rounded-full border border-indigo-500/30">AI Analytics</span>
+                    </div>
+                    <p class="text-xs text-gray-400 hidden sm:block">Campus Hyperlocal Peer-to-Peer Intelligence Engine</p>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs Desktop -->
+            <nav class="hidden lg:flex items-center space-x-1 bg-dark-800/80 p-1.5 rounded-xl border border-gray-700/50 text-sm">
+                <button onclick="switchTab('overview')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-white bg-brand-600 shadow-sm" data-tab="overview">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="compass" class="w-4 h-4"></i><span>Overview</span></span>
+                </button>
+                <button onclick="switchTab('eda')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200" data-tab="eda">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="bar-chart-3" class="w-4 h-4"></i><span>Visual EDA</span></span>
+                </button>
+                <button onclick="switchTab('models')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200" data-tab="models">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="cpu" class="w-4 h-4"></i><span>ML Benchmarks</span></span>
+                </button>
+                <button onclick="switchTab('simulator')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200 relative" data-tab="simulator">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="zap" class="w-4 h-4 text-amber-400"></i><span>Live Predictor</span></span>
+                    <span class="absolute -top-1 -right-1 flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span></span>
+                </button>
+                <button onclick="switchTab('personas')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200" data-tab="personas">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="users" class="w-4 h-4"></i><span>Personas & PCA</span></span>
+                </button>
+                <button onclick="switchTab('strategy')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200" data-tab="strategy">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="lightbulb" class="w-4 h-4"></i><span>App Strategy</span></span>
+                </button>
+                <button onclick="switchTab('team')" class="tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200" data-tab="team">
+                    <span class="flex items-center space-x-1.5"><i data-lucide="award" class="w-4 h-4"></i><span>Team & Docs</span></span>
+                </button>
+            </nav>
+
+            <!-- Quick Action Button -->
+            <div class="flex items-center space-x-3">
+                <a href="#simulator" onclick="switchTab('simulator')" class="hidden sm:inline-flex items-center space-x-2 px-3.5 py-2 text-xs font-semibold rounded-lg bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-dark-900 transition-all shadow-md shadow-teal-500/20">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                    <span>Test ML Model</span>
+                </a>
+                <a href="https://github.com/Naksh-5/Data_Sci_MP" target="_blank" class="p-2 rounded-lg bg-dark-800 hover:bg-dark-700 text-gray-300 border border-gray-700 transition" title="GitHub Repository">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Mobile Tab Scroll -->
+        <div class="flex lg:hidden overflow-x-auto space-x-2 pt-3 pb-1 no-scrollbar text-xs">
+            <button onclick="switchTab('overview')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-brand-600 text-white" data-tab="overview">Overview</button>
+            <button onclick="switchTab('eda')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400" data-tab="eda">Visual EDA</button>
+            <button onclick="switchTab('models')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400" data-tab="models">ML Models</button>
+            <button onclick="switchTab('simulator')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-amber-300" data-tab="simulator">⚡ Simulator</button>
+            <button onclick="switchTab('personas')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400" data-tab="personas">Personas</button>
+            <button onclick="switchTab('strategy')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400" data-tab="strategy">Strategy</button>
+            <button onclick="switchTab('team')" class="tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400" data-tab="team">Team</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 relative z-10">
+
+        <!-- ==================== TAB 1: OVERVIEW & PROBLEM STATEMENT ==================== -->
+        <section id="tab-overview" class="tab-content space-y-10 animate-fade-in">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl glass-panel p-8 sm:p-12 border border-indigo-500/20 bg-gradient-to-br from-dark-800/90 via-dark-900/90 to-brand-950/40">
+                <div class="absolute -right-16 -bottom-16 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="max-w-3xl space-y-5">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
+                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-teal-400"></i>
+                        <span>Empirical Data Science Project & Production App Architecture</span>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight">
+                        Hyperlocal Campus Exchange Powered by <span class="gradient-text">Machine Intelligence</span>
+                    </h1>
+                    <p class="text-gray-300 text-base sm:text-lg leading-relaxed">
+                        College campuses suffer from chronic market frictions: unstructured WhatsApp spam, lack of verified escrow trust, dorm wastage, and underutilized student micro-skills. <strong class="text-white">NeedHub</strong> transforms these chaotic interactions into a structured, predictive peer marketplace.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="switchTab('simulator')" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold flex items-center space-x-2 shadow-lg shadow-indigo-500/25 transition">
+                            <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+                            <span>Launch ML Simulator</span>
+                        </button>
+                        <button onclick="switchTab('models')" class="px-6 py-3 rounded-xl bg-dark-800 hover:bg-dark-700 text-gray-200 font-semibold border border-gray-700 flex items-center space-x-2 transition">
+                            <i data-lucide="cpu" class="w-4 h-4 text-indigo-400"></i>
+                            <span>View 11 Trained Models</span>
+                        </button>
+                        <a href="NeedHub_App_ML_Report.pdf" target="_blank" class="px-5 py-3 rounded-xl bg-dark-800/80 hover:bg-dark-700 text-teal-300 border border-teal-500/30 font-semibold flex items-center space-x-2 transition">
+                            <i data-lucide="file-text" class="w-4 h-4"></i>
+                            <span>Download 15-Page Report</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Metric Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-indigo-500">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs uppercase font-bold text-gray-400">Earning Propensity</span>
+                        <i data-lucide="trending-up" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mt-2">70.1%</div>
+                    <p class="text-xs text-gray-400 mt-1">Students eager to monetize skills on-campus</p>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-amber-500">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs uppercase font-bold text-gray-400">Chat Group Inefficacy</span>
+                        <i data-lucide="message-square-off" class="w-5 h-5 text-amber-400"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mt-2">66.7%</div>
+                    <p class="text-xs text-gray-400 mt-1">Report WhatsApp queries drown in noise</p>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-teal-500">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs uppercase font-bold text-gray-400">Peer Trust Lift</span>
+                        <i data-lucide="shield-check" class="w-5 h-5 text-teal-400"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mt-2">66.7%</div>
+                    <p class="text-xs text-gray-400 mt-1">Prefer campus peers over outside commercial vendors</p>
+                </div>
+                <div class="glass-card p-5 rounded-2xl border-l-4 border-l-rose-500">
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs uppercase font-bold text-gray-400">Dorm Re-commerce</span>
+                        <i data-lucide="recycle" class="w-5 h-5 text-rose-400"></i>
+                    </div>
+                    <div class="text-3xl font-extrabold text-white mt-2">61.6%</div>
+                    <p class="text-xs text-gray-400 mt-1">Students hoarding unused gear in dorms</p>
+                </div>
+            </div>
+
+            <!-- Problem Statement Breakdown (PS) -->
+            <div class="glass-panel p-8 rounded-3xl space-y-6">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 rounded-xl bg-indigo-500/20 text-indigo-400">
+                        <i data-lucide="target" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">Problem Statement & Research Motivation</h2>
+                        <p class="text-sm text-gray-400">Bridging the disconnect between latent campus skills and immediate peer necessities</p>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-red-500/10 flex items-center justify-center text-red-400 font-bold">01</div>
+                        <h3 class="text-lg font-bold text-white">Unstructured Communication Channels</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Students post emergency book requests, project tutoring calls, and equipment rentals in sprawling 1,024-member WhatsApp or Telegram batches where messages are buried within seconds with zero searchability.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-400 font-bold">02</div>
+                        <h3 class="text-lg font-bold text-white">Discovery & Pricing Asymmetry</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            48.0% of students cannot discover qualified peers, and 35.6% cannot set fair micro-gig pricing. Talented coders, designers, and tutors remain idle while peers pay exorbitant third-party rates.
+                        </p>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-teal-500/10 flex items-center justify-center text-teal-400 font-bold">03</div>
+                        <h3 class="text-lg font-bold text-white">Dorm Asset Idleness & Waste</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed">
+                            Lab kits, drafters, calculators, textbooks, and monitors sit abandoned at semester ends. NeedHub unlocks circular student commerce, reducing carbon footprint and college living expenses.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Solution Blueprint -->
+                <div class="p-6 rounded-2xl bg-brand-950/40 border border-brand-500/30 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-2">
+                        <h4 class="text-lg font-bold text-white flex items-center space-x-2">
+                            <i data-lucide="check-circle" class="w-5 h-5 text-teal-400"></i>
+                            <span>The NeedHub Solution Architecture</span>
+                        </h4>
+                        <p class="text-sm text-gray-300 max-w-3xl">
+                            A structured, verified university marketplace with AI-driven skill matching, peer trust-indexed escrow payments, automated need triage, and dynamic gig pricing.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('strategy')" class="px-5 py-2.5 whitespace-nowrap rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-sm transition shadow">
+                        Read Product Strategy
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: EXPLORATORY DATA ANALYSIS (EDA) ==================== -->
+        <section id="tab-eda" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white">Exploratory Data Analysis & Empirical Insights</h2>
+                    <p class="text-sm text-gray-400">10 high-resolution analytical visualizations capturing student behaviors, trust deficits, and supply curves</p>
+                </div>
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-2 text-xs">
+                    <button onclick="filterGraphs('all')" class="graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-brand-600 text-white" data-filter="all">All (10)</button>
+                    <button onclick="filterGraphs('supply')" class="graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-dark-800 text-gray-300 hover:bg-dark-700" data-filter="supply">Market Dynamics</button>
+                    <button onclick="filterGraphs('ml')" class="graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-dark-800 text-gray-300 hover:bg-dark-700" data-filter="ml">ML & Models</button>
+                    <button onclick="filterGraphs('campus')" class="graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-dark-800 text-gray-300 hover:bg-dark-700" data-filter="campus">Campus Social</button>
+                </div>
+            </div>
+
+            <!-- Graphs Gallery Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="graphsGrid">
+
+                <!-- Graph 1 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="supply">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/01_gig_earning_propensity_distribution.png', 'Gig Earning Propensity Distribution', '70.1% of surveyed college students show clear willingness to monetize skills on-campus.')">
+                        <img src="graphs/01_gig_earning_propensity_distribution.png" alt="Gig Earning Propensity Distribution" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Distribution Analysis</span>
+                            <span class="text-xs text-teal-400 font-semibold">N = 177</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Gig Earning Propensity Distribution</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Overwhelming skew towards ratings 4 & 5. Highlights the strong supply-side liquidity ready to be activated on NeedHub.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 2 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="supply">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/02_whatsapp_group_inefficacy.png', 'WhatsApp Group Inefficacy Breakdown', '66.7% suffer from signal drowning and query neglect in current campus chat channels.')">
+                        <img src="graphs/02_whatsapp_group_inefficacy.png" alt="WhatsApp Group Inefficacy" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Market Inefficiency</span>
+                            <span class="text-xs text-amber-400 font-semibold">66.7% Suffer</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">WhatsApp Communication Breakdown</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Validates the core market pain: lack of structured categorization, notification fatigue, and lost requests.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 3 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="supply">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/03_campus_skills_supply.png', 'Campus Skills Supply & Monetization Barriers', 'Tutoring (51.4%) and Coding (38.4%) dominate skills, while Discovery (48.0%) and Pricing (35.6%) are primary bottlenecks.')">
+                        <img src="graphs/03_campus_skills_supply.png" alt="Campus Skills Supply & Barriers" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-teal-400">Supply & Bottlenecks</span>
+                            <span class="text-xs text-teal-400 font-semibold">Tutoring #1</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Campus Skills Supply & Barriers</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Peer academic tutoring and coding assistance represent primary supply vectors. Discovery is the #1 friction.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 4 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="campus">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/04_peer_trust_advantage_pie.png', 'Peer Trust Advantage Over External Services', '66.7% of students prefer peer-to-peer campus solutions due to shared context and lower fees.')">
+                        <img src="graphs/04_peer_trust_advantage_pie.png" alt="Peer Trust Advantage" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Trust Metrics</span>
+                            <span class="text-xs text-indigo-400 font-semibold">2:1 Ratio</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Peer Trust Advantage Ratio</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Confirms students naturally trust verified college peers more than anonymous OLX or external gig platforms.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 5 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="supply">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/05_dorm_waste_recommerce_opportunity.png', 'Dorm Waste & Re-commerce Opportunity', '61.6% of students retain unused items in dorms that could be monetized or rented.')">
+                        <img src="graphs/05_dorm_waste_recommerce_opportunity.png" alt="Dorm Waste Recommerce Opportunity" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-rose-400">Asset Velocity</span>
+                            <span class="text-xs text-rose-400 font-semibold">61.6% Dorm Clutter</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Dorm Re-commerce Potential</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Highlights the huge opportunity for short-term rental of lab apparatus, drafters, textbooks, and electronics.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 6 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="campus">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/06_social_isolation_companion_deficit.png', 'Social Isolation & Campus Companion Deficit', 'Students seeking study and project partners encounter friction connecting across academic years.')">
+                        <img src="graphs/06_social_isolation_companion_deficit.png" alt="Social Isolation & Companion Deficit" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-purple-400">Social Capital</span>
+                            <span class="text-xs text-purple-400 font-semibold">Study Cohorts</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Campus Isolation & Cohort Deficit</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            NeedHub is not merely transactional; it serves as a peer collaboration catalyst for hackathons and coursework.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 7 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="ml">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/07_classification_roc_curves.png', 'ROC Curves for All Classification Models', 'Random Forest, SVC, Gradient Boosting, and Logistic Regression curves on the 20% holdout test set.')">
+                        <img src="graphs/07_classification_roc_curves.png" alt="Classification ROC Curves" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-teal-400">ML Diagnostics</span>
+                            <span class="text-xs text-teal-400 font-semibold">Multi-Model</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Receiver Operating Characteristic (ROC)</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Comprehensive diagnostic comparison quantifying discrimination power across all trained supervised classifiers.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 8 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="ml">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/08_feature_importance_needhub_adoption.png', 'Feature Importance for NeedHub Adoption', 'Top drivers: Skill Monetization Desire, Pricing Uncertainty, Age/Seniority, and Tutoring Offering.')">
+                        <img src="graphs/08_feature_importance_needhub_adoption.png" alt="Feature Importance" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Explainable AI</span>
+                            <span class="text-xs text-indigo-400 font-semibold">Random Forest</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Adoption Feature Importance</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Gini-importance rankings pinpointing which psychological and transactional levers drive active marketplace participation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 9 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="ml">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/09_regression_need_intensity_fit.png', 'Regression Fit: Actual vs Predicted Need Intensity', 'Ridge and Gradient Boosting regression models predicting numerical campus need scores.')">
+                        <img src="graphs/09_regression_need_intensity_fit.png" alt="Regression Need Intensity Fit" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Regression Modeling</span>
+                            <span class="text-xs text-emerald-400 font-semibold">MAE: 3.14</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">Need Intensity Regression Fit</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            Scatter comparison of student urgent needs vs predicted demand, calibrating marketplace supply buffers.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Graph 10 -->
+                <div class="graph-card glass-card rounded-2xl overflow-hidden group" data-category="ml">
+                    <div class="relative overflow-hidden cursor-pointer" onclick="openLightbox('graphs/10_user_persona_kmeans_pca.png', 'Unsupervised Persona Segmentation (K-Means & PCA)', '4 distinct campus behavioral clusters mapped onto 2 principal components explaining core variance.')">
+                        <img src="graphs/10_user_persona_kmeans_pca.png" alt="User Persona KMeans PCA" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-300" loading="lazy">
+                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="px-3 py-1.5 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5 shadow">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Inspect High-Res</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-5 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-pink-400">Unsupervised Cluster</span>
+                            <span class="text-xs text-pink-400 font-semibold">k = 4</span>
+                        </div>
+                        <h3 class="text-base font-bold text-white">K-Means Campus Persona PCA</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed">
+                            2D PCA projection of the 4 campus cohorts: Peer Giggers, Academic Seekers, Casual Browsers, and Power Freelancers.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 3: MACHINE LEARNING ARENA ==================== -->
+        <section id="tab-models" class="tab-content hidden space-y-10 animate-fade-in">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white">Machine Learning Benchmarks & Model Arena</h2>
+                    <p class="text-sm text-gray-400">Rigorous evaluation of 7 Classifiers, 4 Regressors, and Unsupervised Clustering</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20">Train/Test Split: 80% / 20%</span>
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-teal-500/10 text-teal-300 border border-teal-500/20">Stratified Holdout</span>
+                </div>
+            </div>
+
+            <!-- Interactive Chart Container -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Accuracy & F1 Bar Chart -->
+                <div class="glass-panel p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-lg text-white flex items-center space-x-2">
+                            <i data-lucide="bar-chart-2" class="w-5 h-5 text-indigo-400"></i>
+                            <span>Classifier Accuracy & F1-Score Comparison</span>
+                        </h3>
+                        <span class="text-xs text-gray-400 font-mono">Test Set (N=36)</span>
+                    </div>
+                    <div class="h-64 sm:h-72">
+                        <canvas id="modelBenchmarkChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Confusion Matrix & High-Recall Insight -->
+                <div class="glass-panel p-6 rounded-3xl space-y-4 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-bold text-lg text-white flex items-center space-x-2">
+                                <i data-lucide="shield-alert" class="w-5 h-5 text-teal-400"></i>
+                                <span>Champion Model: Random Forest (Recall: 91.7%)</span>
+                            </h3>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">91.7% Gigger Capture</span>
+                        </div>
+                        <p class="text-xs text-gray-300 mt-2 leading-relaxed">
+                            In a two-sided marketplace, <strong>False Negatives are lethal</strong>: classifying an eager student freelancer as unwilling deprives the platform of essential supply inventory. Random Forest achieves <strong>91.7% Recall</strong>, capturing 22 out of 24 real campus giggers on the unseen test set!
+                        </p>
+                    </div>
+
+                    <!-- Visual Confusion Matrix Widget -->
+                    <div class="p-4 rounded-2xl bg-dark-900/80 border border-gray-800 space-y-3">
+                        <div class="text-xs font-bold uppercase text-gray-400 text-center tracking-wider">Random Forest Test Confusion Matrix</div>
+                        <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto text-center font-mono">
+                            <div class="p-3 rounded-xl bg-gray-800/80 border border-gray-700">
+                                <div class="text-xs text-gray-400">True Negative</div>
+                                <div class="text-xl font-bold text-gray-300 mt-1">2</div>
+                                <div class="text-[10px] text-gray-500">Correctly rejected non-giggers</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-red-950/30 border border-red-500/30">
+                                <div class="text-xs text-red-400">False Positive</div>
+                                <div class="text-xl font-bold text-red-300 mt-1">10</div>
+                                <div class="text-[10px] text-red-400/80">Spurious invitations</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-amber-950/30 border border-amber-500/30">
+                                <div class="text-xs text-amber-400">False Negative</div>
+                                <div class="text-xl font-bold text-amber-300 mt-1">2</div>
+                                <div class="text-[10px] text-amber-400/80">Missed giggers (Very Low!)</div>
+                            </div>
+                            <div class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-500/30">
+                                <div class="text-xs text-emerald-400">True Positive</div>
+                                <div class="text-xl font-bold text-emerald-300 mt-1">22</div>
+                                <div class="text-[10px] text-emerald-400/80">Successfully onboarded!</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Benchmark Table -->
+            <div class="glass-panel rounded-3xl overflow-hidden border border-gray-800">
+                <div class="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
+                    <h3 class="font-bold text-base text-white flex items-center space-x-2">
+                        <i data-lucide="table" class="w-4 h-4 text-indigo-400"></i>
+                        <span>Complete Classification Model Leaderboard</span>
+                    </h3>
+                    <span class="text-xs text-gray-400">Metric evaluated on Stratified Test Holdout</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm font-sans">
+                        <thead class="bg-dark-800/80 text-gray-400 uppercase font-mono text-[11px] tracking-wider border-b border-gray-800">
+                            <tr>
+                                <th class="py-3 px-4 sm:px-6">Model Architecture</th>
+                                <th class="py-3 px-4">Accuracy</th>
+                                <th class="py-3 px-4">Precision</th>
+                                <th class="py-3 px-4">Recall</th>
+                                <th class="py-3 px-4">F1-Score</th>
+                                <th class="py-3 px-4">ROC-AUC</th>
+                                <th class="py-3 px-4">Marketplace Deployment Utility</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800/60 text-gray-300 font-mono">
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                    <span>Random Forest Classifier (100 Trees)</span>
+                                </td>
+                                <td class="py-3 px-4 text-emerald-400 font-bold">66.7%</td>
+                                <td class="py-3 px-4">0.6875</td>
+                                <td class="py-3 px-4 text-emerald-400 font-bold">0.9167</td>
+                                <td class="py-3 px-4 text-emerald-400 font-bold">0.7857</td>
+                                <td class="py-3 px-4">0.5139</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Top supply onboarding champion (Max Recall)</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-teal-400"></span>
+                                    <span>Support Vector Machine (RBF Kernel)</span>
+                                </td>
+                                <td class="py-3 px-4 text-teal-400 font-bold">63.9%</td>
+                                <td class="py-3 px-4">0.6667</td>
+                                <td class="py-3 px-4 text-teal-400 font-bold">0.9167</td>
+                                <td class="py-3 px-4">0.7719</td>
+                                <td class="py-3 px-4 text-teal-400 font-bold">0.5903</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Highest ROC-AUC; robust non-linear boundaries</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-400"></span>
+                                    <span>Gradient Boosting Classifier</span>
+                                </td>
+                                <td class="py-3 px-4">63.9%</td>
+                                <td class="py-3 px-4">0.6897</td>
+                                <td class="py-3 px-4">0.8333</td>
+                                <td class="py-3 px-4">0.7547</td>
+                                <td class="py-3 px-4">0.5243</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Balanced precision-recall tradeoff</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition bg-brand-950/20">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                    <span>Logistic Regression (L2 Regularized)</span>
+                                </td>
+                                <td class="py-3 px-4">58.3%</td>
+                                <td class="py-3 px-4">0.6923</td>
+                                <td class="py-3 px-4">0.7500</td>
+                                <td class="py-3 px-4">0.7199</td>
+                                <td class="py-3 px-4">0.5104</td>
+                                <td class="py-3 px-4 font-sans text-xs text-indigo-300">Powers real-time client-side live predictor engine</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gray-500"></span>
+                                    <span>Decision Tree (CART, max_depth=5)</span>
+                                </td>
+                                <td class="py-3 px-4">58.3%</td>
+                                <td class="py-3 px-4">0.6800</td>
+                                <td class="py-3 px-4">0.7083</td>
+                                <td class="py-3 px-4">0.6939</td>
+                                <td class="py-3 px-4">0.5208</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Fully interpretable rule induction branches</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                    <span>Gaussian Naive Bayes</span>
+                                </td>
+                                <td class="py-3 px-4">55.6%</td>
+                                <td class="py-3 px-4">0.7222</td>
+                                <td class="py-3 px-4">0.5417</td>
+                                <td class="py-3 px-4">0.6190</td>
+                                <td class="py-3 px-4">0.5625</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Ultra fast conditional probability baseline</td>
+                            </tr>
+                            <tr class="hover:bg-dark-800/40 transition">
+                                <td class="py-3 px-4 sm:px-6 font-sans font-semibold text-white flex items-center space-x-2">
+                                    <span class="w-2 h-2 rounded-full bg-gray-600"></span>
+                                    <span>K-Nearest Neighbors (k=5)</span>
+                                </td>
+                                <td class="py-3 px-4">55.6%</td>
+                                <td class="py-3 px-4">0.6552</td>
+                                <td class="py-3 px-4">0.7917</td>
+                                <td class="py-3 px-4">0.7170</td>
+                                <td class="py-3 px-4">0.4375</td>
+                                <td class="py-3 px-4 font-sans text-xs text-gray-400">Neighborhood density similarity baseline</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Regression Models Card -->
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 rounded-xl bg-teal-500/20 text-teal-400">
+                        <i data-lucide="line-chart" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">Campus Need Intensity Forecasting (Regression Arena)</h3>
+                        <p class="text-xs text-gray-400">Predicting continuous student demand score to forecast daily campus platform traffic</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+                    <div class="glass-card p-4 rounded-xl border-t-2 border-t-teal-500">
+                        <div class="text-xs text-gray-400 uppercase font-mono">Ridge Regression</div>
+                        <div class="text-xl font-bold text-teal-300 mt-1">MAE: 3.143</div>
+                        <div class="text-xs text-gray-400 mt-1">RMSE: 4.011 | L2 Penalty</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-2 border-t-indigo-500">
+                        <div class="text-xs text-gray-400 uppercase font-mono">Linear Regression (OLS)</div>
+                        <div class="text-xl font-bold text-indigo-300 mt-1">MAE: 3.176</div>
+                        <div class="text-xs text-gray-400 mt-1">RMSE: 4.032 | Unregularized</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-2 border-t-amber-500">
+                        <div class="text-xs text-gray-400 uppercase font-mono">Lasso Regression</div>
+                        <div class="text-xl font-bold text-amber-300 mt-1">MAE: 3.250</div>
+                        <div class="text-xs text-gray-400 mt-1">RMSE: 4.088 | Sparse L1</div>
+                    </div>
+                    <div class="glass-card p-4 rounded-xl border-t-2 border-t-rose-500">
+                        <div class="text-xs text-gray-400 uppercase font-mono">Gradient Boosting Regressor</div>
+                        <div class="text-xl font-bold text-rose-300 mt-1">MAE: 3.328</div>
+                        <div class="text-xs text-gray-400 mt-1">RMSE: 4.382 | Non-linear Trees</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: LIVE ML PREDICTION SIMULATOR ==================== -->
+        <section id="tab-simulator" class="tab-content hidden space-y-8 animate-fade-in">
+            <div class="glass-panel p-6 sm:p-8 rounded-3xl border border-indigo-500/30">
+                <div class="max-w-3xl space-y-3">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-semibold">
+                        <i data-lucide="zap" class="w-3.5 h-3.5 fill-amber-400"></i>
+                        <span>Client-Side Real-Time Inference Engine</span>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Live Student Earning Propensity Simulator</h2>
+                    <p class="text-sm text-gray-300 leading-relaxed">
+                        Test an individual student profile against our mathematically extracted Logistic Regression parameters and StandardScaler weights. As you adjust sliders and checkboxes, inference executes dynamically in your browser to compute exact gig adoption probability \(P(y=1)\), target persona, and automated platform recommendations.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Simulator Main Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                <!-- Left Column: Interactive Inputs (7 cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6">
+                        <div class="flex items-center justify-between border-b border-gray-800 pb-4">
+                            <h3 class="font-bold text-lg text-white flex items-center space-x-2">
+                                <i data-lucide="sliders" class="w-5 h-5 text-indigo-400"></i>
+                                <span>Student Behavioral & Demographic Profile</span>
+                            </h3>
+                            <button onclick="resetSimulator()" class="text-xs text-gray-400 hover:text-white flex items-center space-x-1 transition">
+                                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                                <span>Reset Defaults</span>
+                            </button>
+                        </div>
+
+                        <!-- Sliders Grid -->
+                        <div class="space-y-5">
+                            <!-- Skill Monetization Desire -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200 flex items-center space-x-1.5">
+                                        <span>Skill Monetization Desire (1 - 5)</span>
+                                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-400" title="Top adoption driver (weight: +0.3137)"></i>
+                                    </label>
+                                    <span id="val_monetization" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">4 / 5</span>
+                                </div>
+                                <input type="range" id="input_monetization" min="1" max="5" value="4" step="1" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                                <div class="flex justify-between text-[10px] text-gray-500">
+                                    <span>1: No interest</span>
+                                    <span>3: Moderate</span>
+                                    <span>5: Highly eager to earn</span>
+                                </div>
+                            </div>
+
+                            <!-- Need Intensity Score -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200">Urgent Campus Need Intensity (0 - 15)</label>
+                                    <span id="val_need" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">5.0</span>
+                                </div>
+                                <input type="range" id="input_need" min="0" max="15" value="5" step="0.5" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                                <div class="flex justify-between text-[10px] text-gray-500">
+                                    <span>0: Self-sufficient</span>
+                                    <span>7: Frequent needs</span>
+                                    <span>15: High emergency deficits</span>
+                                </div>
+                            </div>
+
+                            <!-- Peer Trust Level -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200">Peer Trust Index (0 - 3)</label>
+                                    <span id="val_trust" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">2.0</span>
+                                </div>
+                                <input type="range" id="input_trust" min="0" max="3" value="2" step="1" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                                <div class="flex justify-between text-[10px] text-gray-500">
+                                    <span>0: Distrusts peers</span>
+                                    <span>2: Prefers campus peers</span>
+                                    <span>3: Strong collegiate bond</span>
+                                </div>
+                            </div>
+
+                            <!-- Dorm Waste & Recommerce -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200">Dorm Surplus / Waste Score (0 - 3)</label>
+                                    <span id="val_dorm" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">2.0</span>
+                                </div>
+                                <input type="range" id="input_dorm" min="0" max="3" value="2" step="1" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                                <div class="flex justify-between text-[10px] text-gray-500">
+                                    <span>0: Empty room</span>
+                                    <span>2: Spare gadgets/books</span>
+                                    <span>3: Heavy clutter to sell</span>
+                                </div>
+                            </div>
+
+                            <!-- Social Isolation / Study Deficit -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200">Social Isolation / Study Partner Deficit (0 - 8)</label>
+                                    <span id="val_isolation" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">3.0</span>
+                                </div>
+                                <input type="range" id="input_isolation" min="0" max="8" value="3" step="0.5" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                            </div>
+
+                            <!-- Total Skills Offered -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between items-center text-xs">
+                                    <label class="font-semibold text-gray-200">Total Skill Competencies Offered (0 - 6)</label>
+                                    <span id="val_skills" class="font-mono font-bold text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded">3</span>
+                                </div>
+                                <input type="range" id="input_skills" min="0" max="6" value="3" step="1" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Checkboxes: Specific Skills & Barriers -->
+                        <div class="pt-2 border-t border-gray-800 space-y-4">
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-2">Specific Skills Offered</label>
+                                <div class="grid grid-cols-3 gap-3">
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="check_tutoring" checked onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Tutoring</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="check_coding" checked onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Coding</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="check_design" onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Graphic Design</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-xs font-bold uppercase tracking-wider text-gray-400 block mb-2">Monetization Barriers Felt</label>
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="barrier_discovery" checked onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Discovery Friction</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="barrier_pricing" checked onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Pricing Hesitation</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="barrier_confidence" onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Confidence Gap</span>
+                                    </label>
+                                    <label class="flex items-center space-x-2 text-xs text-gray-300 p-2 rounded-xl bg-dark-900/60 border border-gray-800 cursor-pointer hover:border-gray-700">
+                                        <input type="checkbox" id="barrier_time" onchange="runPrediction()" class="accent-indigo-500 rounded">
+                                        <span>Time Crunch</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Demographics -->
+                            <div class="grid grid-cols-2 gap-4 pt-2">
+                                <div>
+                                    <label class="text-xs font-bold text-gray-300 block mb-1">Student Age: <span id="val_age" class="text-indigo-400 font-mono">19</span></label>
+                                    <input type="range" id="input_age" min="17" max="25" value="19" step="1" oninput="runPrediction()" class="w-full accent-indigo-500 cursor-pointer">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-bold text-gray-300 block mb-1">Gender</label>
+                                    <select id="select_gender" onchange="runPrediction()" class="w-full p-2 rounded-xl bg-dark-900 border border-gray-800 text-xs text-gray-300 focus:outline-none focus:border-indigo-500">
+                                        <option value="female">Female</option>
+                                        <option value="male" selected>Male / Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Real-Time ML Output Panel (5 cols) -->
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass-panel p-6 sm:p-8 rounded-3xl space-y-6 border border-teal-500/30 relative overflow-hidden">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs uppercase font-bold tracking-wider text-teal-400">Live Mathematical Inference</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-mono bg-teal-500/20 text-teal-300 border border-teal-500/30">Logistic Sigmoid</span>
+                        </div>
+
+                        <!-- Big Circular Probability Display -->
+                        <div class="flex flex-col items-center justify-center py-4">
+                            <div class="relative w-44 h-44 flex items-center justify-center">
+                                <svg class="w-full h-full transform -rotate-90">
+                                    <circle cx="88" cy="88" r="76" stroke="#1f2937" stroke-width="12" fill="transparent" />
+                                    <circle id="probabilityCircle" cx="88" cy="88" r="76" stroke="#14b8a6" stroke-width="12" stroke-dasharray="477.5" stroke-dashoffset="100" stroke-linecap="round" fill="transparent" class="transition-all duration-500" />
+                                </svg>
+                                <div class="absolute flex flex-col items-center justify-center text-center">
+                                    <span id="probPercentage" class="text-4xl font-extrabold text-white font-mono">84.2%</span>
+                                    <span class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold mt-0.5">Propensity</span>
+                                </div>
+                            </div>
+
+                            <div id="propensityBadge" class="mt-4 px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1.5">
+                                <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                                <span>High Earning Propensity (Active Gigger)</span>
+                            </div>
+                        </div>
+
+                        <!-- Persona Classification Match -->
+                        <div class="p-4 rounded-2xl bg-dark-900/80 border border-gray-800 space-y-2">
+                            <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400">Target Campus Cluster Match</div>
+                            <div class="flex items-center space-x-3">
+                                <div id="personaIcon" class="w-10 h-10 rounded-xl bg-brand-500/20 text-indigo-400 flex items-center justify-center font-bold text-lg">
+                                    <i data-lucide="briefcase" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <div id="personaTitle" class="font-bold text-white text-sm sm:text-base">Cluster 0: The Core Peer Gigger</div>
+                                    <div id="personaSub" class="text-xs text-gray-400">High gig willingness (4.23/5), high trust, tutoring oriented</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Automated NeedHub Action Items -->
+                        <div class="space-y-2">
+                            <div class="text-xs font-bold uppercase tracking-wider text-gray-400">Personalized Marketplace Interventions</div>
+                            <div id="actionList" class="text-xs space-y-2 text-gray-300">
+                                <div class="p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 flex items-start space-x-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                                    <span>Prompt to publish tutoring micro-listing with verified campus badge.</span>
+                                </div>
+                                <div class="p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 flex items-start space-x-2">
+                                    <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                                    <span>Provide automated pricing guide (₹200 - ₹350/hr) to overcome pricing hesitation.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mathematical Equation Reveal -->
+                        <div class="pt-2 border-t border-gray-800/80 text-[11px] font-mono text-gray-500">
+                            Logit Score (z): <span id="logitVal" class="text-gray-300 font-bold">+1.674</span> | \(\sigma(z) = \frac{1}{1 + e^{-z}}\)
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== TAB 5: PERSONAS & K-MEANS PCA ==================== -->
+        <section id="tab-personas" class="tab-content hidden space-y-10 animate-fade-in">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-3xl font-extrabold text-white">Student Persona Stratification & K-Means Clustering</h2>
+                    <p class="text-sm text-gray-400">Unsupervised segmentation (\(k=4\)) identifying behavioral segments across the campus ecosystem</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-pink-500/10 text-pink-300 border border-pink-500/20">PCA Explained Variance: 28.5%</span>
+                </div>
+            </div>
+
+            <!-- 4 Persona Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Cluster 0 -->
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-t-indigo-500 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">41.2% Population</span>
+                        <i data-lucide="users-2" class="w-5 h-5 text-indigo-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-mono text-gray-400">Cluster 0</div>
+                        <h3 class="text-lg font-bold text-white mt-0.5">The Core Peer Gigger</h3>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 font-mono">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Gig Willingness:</span>
+                            <span class="font-bold text-emerald-400">4.23 / 5</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Peer Trust Index:</span>
+                            <span class="font-bold text-indigo-400">2.07 / 3</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Need Intensity:</span>
+                            <span>2.44 / 15</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Skills Count:</span>
+                            <span>2.25</span>
+                        </li>
+                    </ul>
+                    <div class="pt-2 border-t border-gray-800 text-xs text-gray-400 leading-relaxed font-sans">
+                        <strong>Role on NeedHub:</strong> Primary reliable service provider for coursework, homework assistance, and lab tutorials.
+                    </div>
+                </div>
+
+                <!-- Cluster 1 -->
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-t-amber-500 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">17.5% Population</span>
+                        <i data-lucide="help-circle" class="w-5 h-5 text-amber-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-mono text-gray-400">Cluster 1</div>
+                        <h3 class="text-lg font-bold text-white mt-0.5">Stressed Academic Seeker</h3>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 font-mono">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Need Intensity:</span>
+                            <span class="font-bold text-amber-400">8.27 / 15 (Max)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Social Isolation:</span>
+                            <span class="font-bold text-rose-400">4.81 / 8 (Max)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Gig Willingness:</span>
+                            <span>3.94 / 5</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Peer Trust:</span>
+                            <span>1.84 / 3</span>
+                        </li>
+                    </ul>
+                    <div class="pt-2 border-t border-gray-800 text-xs text-gray-400 leading-relaxed font-sans">
+                        <strong>Role on NeedHub:</strong> High-frequency buyer of tutoring, assignment reviews, and emergency study notes.
+                    </div>
+                </div>
+
+                <!-- Cluster 2 -->
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-t-teal-500 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">23.2% Population</span>
+                        <i data-lucide="eye" class="w-5 h-5 text-teal-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-mono text-gray-400">Cluster 2</div>
+                        <h3 class="text-lg font-bold text-white mt-0.5">The Casual Browser</h3>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 font-mono">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Gig Willingness:</span>
+                            <span class="font-bold text-gray-300">3.05 / 5 (Min)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Need Intensity:</span>
+                            <span>2.78 / 15</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Peer Trust:</span>
+                            <span>1.15 / 3 (Low)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Dorm Clutter:</span>
+                            <span>1.12 / 3</span>
+                        </li>
+                    </ul>
+                    <div class="pt-2 border-t border-gray-800 text-xs text-gray-400 leading-relaxed font-sans">
+                        <strong>Role on NeedHub:</strong> Passive marketplace consumer. Requires zero-friction browsing and introductory discounts.
+                    </div>
+                </div>
+
+                <!-- Cluster 3 -->
+                <div class="glass-card p-6 rounded-2xl border-t-4 border-t-pink-500 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-pink-500/20 text-pink-300 border border-pink-500/30">18.1% Population</span>
+                        <i data-lucide="rocket" class="w-5 h-5 text-pink-400"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs uppercase font-mono text-gray-400">Cluster 3</div>
+                        <h3 class="text-lg font-bold text-white mt-0.5">The Power Freelancer</h3>
+                    </div>
+                    <ul class="text-xs text-gray-300 space-y-2 font-mono">
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Skills Count:</span>
+                            <span class="font-bold text-pink-400">4.66 / 6 (Max)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Gig Willingness:</span>
+                            <span class="font-bold text-emerald-400">4.69 / 5 (Max)</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Need Intensity:</span>
+                            <span>6.75 / 15</span>
+                        </li>
+                        <li class="flex items-center justify-between">
+                            <span class="text-gray-400">Dorm Surplus:</span>
+                            <span class="font-bold text-indigo-400">2.41 / 3</span>
+                        </li>
+                    </ul>
+                    <div class="pt-2 border-t border-gray-800 text-xs text-gray-400 leading-relaxed font-sans">
+                        <strong>Role on NeedHub:</strong> Super-sellers; high skills across coding, UI/UX, video editing, and project build-outs.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Radar Chart & PCA View -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-6 glass-panel p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-base text-white flex items-center space-x-2">
+                            <i data-lucide="radar" class="w-4 h-4 text-pink-400"></i>
+                            <span>Multi-Dimensional Persona Radar Profile</span>
+                        </h3>
+                        <span class="text-xs text-gray-400">Normalized Scale</span>
+                    </div>
+                    <div class="h-80">
+                        <canvas id="personaRadarChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-6 glass-panel p-6 rounded-3xl space-y-4">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-base text-white flex items-center space-x-2">
+                            <i data-lucide="scatter-chart" class="w-4 h-4 text-indigo-400"></i>
+                            <span>Principal Component Analysis (PCA) Projection</span>
+                        </h3>
+                        <span class="text-xs text-gray-400">2 Components</span>
+                    </div>
+                    <div class="relative rounded-2xl overflow-hidden cursor-pointer" onclick="openLightbox('graphs/10_user_persona_kmeans_pca.png', 'User Persona K-Means & PCA Projection', 'Clear spatial separation between Power Freelancers, Stressed Seekers, and Core Giggers.')">
+                        <img src="graphs/10_user_persona_kmeans_pca.png" alt="Persona PCA" class="w-full h-80 object-cover object-center rounded-2xl">
+                        <div class="absolute inset-0 bg-black/30 hover:bg-black/10 transition flex items-end p-4">
+                            <span class="px-3 py-1 rounded-lg bg-dark-900/90 text-white text-xs font-semibold flex items-center space-x-1.5">
+                                <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                                <span>Click to Zoom PCA Map</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 6: APP STRATEGY & ROADMAP ==================== -->
+        <section id="tab-strategy" class="tab-content hidden space-y-10 animate-fade-in">
+            <div class="glass-panel p-8 rounded-3xl space-y-3">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300 text-xs font-semibold">
+                    <i data-lucide="git-branch" class="w-3.5 h-3.5 text-teal-400"></i>
+                    <span>Data-Driven Product Architecture</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">NeedHub Application Inferences & Strategic Roadmap</h2>
+                <p class="text-sm text-gray-300 max-w-4xl leading-relaxed">
+                    Translating empirical survey distributions and machine learning parameters directly into high-impact app features, retention loops, and sustainable monetization mechanisms.
+                </p>
+            </div>
+
+            <!-- Core App Pillars -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Pillar 1 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-l-4 border-l-indigo-500">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">
+                        <i data-lucide="badge-percent" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Dynamic Smart-Pricing Engine</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong>Data Inference:</strong> 35.6% of students hesitate to offer gigs because they don't know how much to charge.
+                    </p>
+                    <div class="p-3 rounded-xl bg-dark-900/80 border border-gray-800 text-xs text-gray-300 space-y-1">
+                        <div class="font-bold text-indigo-300">Feature Implementation:</div>
+                        <p>NeedHub suggests dynamic micro-pricing (e.g. ₹150 for 1-hr assignment help, ₹500 for UI redesign) based on campus supply-demand indices.</p>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-l-4 border-l-teal-500">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center font-bold">
+                        <i data-lucide="shield" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Peer Trust Escrow & Edu Verification</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong>Data Inference:</strong> 66.7% prefer peer commerce, but need protection against non-delivery or incomplete work.
+                    </p>
+                    <div class="p-3 rounded-xl bg-dark-900/80 border border-gray-800 text-xs text-gray-300 space-y-1">
+                        <div class="font-bold text-teal-300">Feature Implementation:</div>
+                        <p>College email (@pccoepune.org) single sign-on + UPI escrow holding funds until buyer approves task delivery.</p>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-l-4 border-l-rose-500">
+                    <div class="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-400 flex items-center justify-center font-bold">
+                        <i data-lucide="recycle" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white">Semester Re-Commerce & Rental Hub</h3>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        <strong>Data Inference:</strong> 61.6% report unused dorm items and 66.7% suffer from lost WhatsApp rental inquiries.
+                    </p>
+                    <div class="p-3 rounded-xl bg-dark-900/80 border border-gray-800 text-xs text-gray-300 space-y-1">
+                        <div class="font-bold text-rose-300">Feature Implementation:</div>
+                        <p>Temporary peer rental tracking with deposit automation for lab coats, engineering drafters, and Arduino kits.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phased Launch Timeline -->
+            <div class="glass-panel p-8 rounded-3xl space-y-6">
+                <h3 class="text-xl font-bold text-white flex items-center space-x-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-indigo-400"></i>
+                    <span>Implementation Roadmap</span>
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                    <div class="p-5 rounded-2xl bg-dark-900/70 border border-gray-800 space-y-3">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">Phase 1: Q1</span>
+                        <h4 class="font-bold text-white text-base">Campus MVP Launch</h4>
+                        <ul class="text-xs text-gray-400 space-y-1.5 list-disc list-inside">
+                            <li>Verified @college email onboarding</li>
+                            <li>Peer skill listings (Tutoring & Coding)</li>
+                            <li>Structured search with filter tags</li>
+                            <li>Initial 500-student pilot in PCCoE</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-dark-900/70 border border-gray-800 space-y-3">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-teal-500/20 text-teal-300 border border-teal-500/30">Phase 2: Q2</span>
+                        <h4 class="font-bold text-white text-base">Trust & Micro-Escrow</h4>
+                        <ul class="text-xs text-gray-400 space-y-1.5 list-disc list-inside">
+                            <li>Instant UPI micro-escrow integration</li>
+                            <li>Reputation & review ledger</li>
+                            <li>Dorm re-commerce & gear rental</li>
+                            <li>Live AI gig match recommendations</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 rounded-2xl bg-dark-900/70 border border-gray-800 space-y-3">
+                        <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-purple-500/20 text-purple-300 border border-purple-500/30">Phase 3: Q3</span>
+                        <h4 class="font-bold text-white text-base">Inter-Campus Expansion</h4>
+                        <ul class="text-xs text-gray-400 space-y-1.5 list-disc list-inside">
+                            <li>Expansion to COEP, PICT, and MIT Pune</li>
+                            <li>Inter-college project team builder</li>
+                            <li>Industry sponsor gig challenges</li>
+                            <li>Automated dynamic pricing engine</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 7: TEAM & DOWNLOADS ==================== -->
+        <section id="tab-team" class="tab-content hidden space-y-10 animate-fade-in">
+            <div class="glass-panel p-8 rounded-3xl space-y-3">
+                <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-xs font-semibold">
+                    <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-indigo-400"></i>
+                    <span>Department of Information Technology, PCCoE Pune</span>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Project Authors & Verifiable Artifacts</h2>
+                <p class="text-sm text-gray-300">
+                    Developed under the Data Science & Analytics Curriculum (Third Year IT, Div A, Batch A4)
+                </p>
+            </div>
+
+            <!-- Authors Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Author 1 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-t-2 border-t-indigo-500">
+                    <div class="w-12 h-12 rounded-xl bg-indigo-600/20 text-indigo-400 flex items-center justify-center font-bold text-xl">
+                        NL
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Nakshatra Lalwani</h3>
+                        <p class="text-xs font-mono text-indigo-400">Roll No: 125B1F066</p>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Project Lead, Machine Learning Architecture, Data Modeling & Full-Stack Showcase Development.
+                    </p>
+                </div>
+
+                <!-- Author 2 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-t-2 border-t-teal-500">
+                    <div class="w-12 h-12 rounded-xl bg-teal-600/20 text-teal-400 flex items-center justify-center font-bold text-xl">
+                        SD
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Siya Dubey</h3>
+                        <p class="text-xs font-mono text-teal-400">Roll No: 125B1F065</p>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Exploratory Data Analysis, Statistical Hypothesis Verification, and Feature Engineering.
+                    </p>
+                </div>
+
+                <!-- Author 3 -->
+                <div class="glass-card p-6 rounded-2xl space-y-4 border-t-2 border-t-amber-500">
+                    <div class="w-12 h-12 rounded-xl bg-amber-600/20 text-amber-400 flex items-center justify-center font-bold text-xl">
+                        PK
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Pawan Koshti</h3>
+                        <p class="text-xs font-mono text-amber-400">Roll No: 125B1F079</p>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Data Acquisition, Survey Ingestion, Preprocessing, and Research Documentation.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Downloadable Artifacts -->
+            <div class="glass-panel p-8 rounded-3xl space-y-6">
+                <h3 class="text-xl font-bold text-white flex items-center space-x-2">
+                    <i data-lucide="download-cloud" class="w-5 h-5 text-teal-400"></i>
+                    <span>Download Project Deliverables & Source Artifacts</span>
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <a href="NeedHub_App_ML_Report.pdf" target="_blank" class="glass-card p-5 rounded-2xl hover:border-indigo-500 transition flex items-center space-x-4">
+                        <div class="p-3 rounded-xl bg-red-500/20 text-red-400 shrink-0">
+                            <i data-lucide="file-text" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">NeedHub Comprehensive PDF Report</div>
+                            <div class="text-xs text-gray-400 mt-0.5">15 Pages | 300 DPI Figures (2.1 MB)</div>
+                        </div>
+                    </a>
+
+                    <a href="NeedHub_Data_Science_ML_Analysis.ipynb" download class="glass-card p-5 rounded-2xl hover:border-teal-500 transition flex items-center space-x-4">
+                        <div class="p-3 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+                            <i data-lucide="book-open" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Jupyter Analysis Notebook</div>
+                            <div class="text-xs text-gray-400 mt-0.5">Full Python Code & Output Logs</div>
+                        </div>
+                    </a>
+
+                    <a href="needhub_cleaned_ml_dataset.csv" download class="glass-card p-5 rounded-2xl hover:border-teal-500 transition flex items-center space-x-4">
+                        <div class="p-3 rounded-xl bg-teal-500/20 text-teal-400 shrink-0">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <div class="font-bold text-white text-sm">Cleaned ML Dataset (CSV)</div>
+                            <div class="text-xs text-gray-400 mt-0.5">177 Rows | 32 Engineered Features</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 bg-black/90 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="relative max-w-5xl w-full glass-panel rounded-3xl overflow-hidden border border-gray-700 p-6 space-y-4">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 id="lightboxTitle" class="text-lg font-bold text-white">Graph Preview</h3>
+                    <p id="lightboxSubtitle" class="text-xs text-gray-400 mt-0.5"></p>
+                </div>
+                <button onclick="closeLightbox()" class="p-2 rounded-xl bg-dark-800 hover:bg-dark-700 text-gray-300 transition">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="max-h-[75vh] flex items-center justify-center overflow-auto rounded-xl bg-dark-900/60 p-2">
+                <img id="lightboxImg" src="" alt="High Res Graph" class="max-h-[70vh] object-contain rounded-lg">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800/80 glass-panel py-8 px-6 mt-16 relative z-10 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <i data-lucide="layers" class="w-4 h-4 text-indigo-400"></i>
+                <span class="font-bold text-white">NeedHub™ Data Science Platform</span>
+                <span>• PCCoE Pune IT Department</span>
+            </div>
+            <div class="text-center md:text-right">
+                <span>Nakshatra Lalwani (125B1F066) • Siya Dubey (125B1F065) • Pawan Koshti (125B1F079)</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Tab Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            const target = document.getElementById('tab-' + tabId);
+            if (target) target.classList.remove('hidden');
+
+            // Desktop active state
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.className = "tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-white bg-brand-600 shadow-sm";
+                } else {
+                    btn.className = "tab-btn px-3.5 py-1.5 rounded-lg font-medium transition-all text-gray-400 hover:text-gray-200";
+                }
+            });
+
+            // Mobile active state
+            document.querySelectorAll('.tab-btn-mobile').forEach(btn => {
+                if (btn.dataset.tab === tabId) {
+                    btn.className = "tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-brand-600 text-white";
+                } else {
+                    btn.className = "tab-btn-mobile px-3 py-1.5 rounded-md font-medium whitespace-nowrap bg-dark-800 text-gray-400";
+                }
+            });
+
+            // Re-render icons if needed
+            lucide.createIcons();
+
+            // Init charts if models or personas tabs opened
+            if (tabId === 'models' && !window.chartModelsInitialized) {
+                initModelChart();
+            }
+            if (tabId === 'personas' && !window.chartRadarInitialized) {
+                initRadarChart();
+            }
+        }
+
+        // Graph Filters
+        function filterGraphs(cat) {
+            document.querySelectorAll('.graph-filter-btn').forEach(b => {
+                if (b.dataset.filter === cat) {
+                    b.className = "graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-brand-600 text-white";
+                } else {
+                    b.className = "graph-filter-btn px-3 py-1.5 rounded-lg font-medium bg-dark-800 text-gray-300 hover:bg-dark-700";
+                }
+            });
+
+            document.querySelectorAll('.graph-card').forEach(card => {
+                if (cat === 'all' || card.dataset.category === cat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        // Lightbox Functions
+        function openLightbox(src, title, subtitle) {
+            document.getElementById('lightboxImg').src = src;
+            document.getElementById('lightboxTitle').innerText = title;
+            document.getElementById('lightboxSubtitle').innerText = subtitle;
+            document.getElementById('lightboxModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightboxModal').classList.add('hidden');
+        }
+
+        // Close lightbox on Escape key or backdrop click
+        document.getElementById('lightboxModal').addEventListener('click', function(e) {
+            if (e.target === this) closeLightbox();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+
+        // ==================== LIVE ML PREDICTION MATHEMATICS ====================
+        // Extracted StandardScaler Parameters & Logistic Regression Coefficients
+        const MODEL = {
+            intercept: 0.8463,
+            features: [
+                { name: 'need_intensity_score', mean: 4.3220, scale: 3.3607, weight: 0.0575 },
+                { name: 'peer_trust_score', mean: 1.7966, scale: 0.9103, weight: -0.1461 },
+                { name: 'social_isolation_score', mean: 2.6243, scale: 2.3401, weight: 0.0375 },
+                { name: 'dorm_waste_score', mean: 1.7345, scale: 1.1009, weight: 0.1353 },
+                { name: 'group_inefficacy_score', mean: 2.0819, scale: 0.9788, weight: -0.0605 },
+                { name: 'skill_monetization_desire', mean: 2.9379, scale: 1.1604, weight: 0.3137 },
+                { name: 'total_skills_offered', mean: 2.4802, scale: 1.6368, weight: 0.1999 },
+                { name: 'barrier_discovery', mean: 0.4802, scale: 0.4996, weight: 0.2085 },
+                { name: 'barrier_pricing', mean: 0.3559, scale: 0.4788, weight: 0.3070 },
+                { name: 'barrier_confidence', mean: 0.3277, scale: 0.4694, weight: -0.1928 },
+                { name: 'barrier_time', mean: 0.3672, scale: 0.4821, weight: 0.0474 },
+                { name: 'skill_tutoring', mean: 0.5141, scale: 0.4998, weight: 0.2290 },
+                { name: 'skill_coding', mean: 0.3842, scale: 0.4864, weight: -0.2673 },
+                { name: 'skill_design', mean: 0.2542, scale: 0.4354, weight: 0.1532 },
+                { name: 'age_clean', mean: 19.2203, scale: 1.3071, weight: 0.3653 },
+                { name: 'is_female', mean: 0.4576, scale: 0.4982, weight: 0.1076 }
+            ]
+        };
+
+        function runPrediction() {
+            // Read inputs
+            const monetization = parseFloat(document.getElementById('input_monetization').value);
+            const need = parseFloat(document.getElementById('input_need').value);
+            const trust = parseFloat(document.getElementById('input_trust').value);
+            const dorm = parseFloat(document.getElementById('input_dorm').value);
+            const isolation = parseFloat(document.getElementById('input_isolation').value);
+            const skills = parseFloat(document.getElementById('input_skills').value);
+            const age = parseFloat(document.getElementById('input_age').value);
+            const isFemale = document.getElementById('select_gender').value === 'female' ? 1.0 : 0.0;
+
+            const checkTutoring = document.getElementById('check_tutoring').checked ? 1.0 : 0.0;
+            const checkCoding = document.getElementById('check_coding').checked ? 1.0 : 0.0;
+            const checkDesign = document.getElementById('check_design').checked ? 1.0 : 0.0;
+
+            const bDiscovery = document.getElementById('barrier_discovery').checked ? 1.0 : 0.0;
+            const bPricing = document.getElementById('barrier_pricing').checked ? 1.0 : 0.0;
+            const bConfidence = document.getElementById('barrier_confidence').checked ? 1.0 : 0.0;
+            const bTime = document.getElementById('barrier_time').checked ? 1.0 : 0.0;
+
+            // Update UI labels
+            document.getElementById('val_monetization').innerText = monetization + ' / 5';
+            document.getElementById('val_need').innerText = need.toFixed(1);
+            document.getElementById('val_trust').innerText = trust.toFixed(1);
+            document.getElementById('val_dorm').innerText = dorm.toFixed(1);
+            document.getElementById('val_isolation').innerText = isolation.toFixed(1);
+            document.getElementById('val_skills').innerText = skills;
+            document.getElementById('val_age').innerText = age;
+
+            // Mapping raw input vector in exact feature order
+            const raw = [
+                need,
+                trust,
+                isolation,
+                dorm,
+                2.0, // group_inefficacy average
+                monetization,
+                skills,
+                bDiscovery,
+                bPricing,
+                bConfidence,
+                bTime,
+                checkTutoring,
+                checkCoding,
+                checkDesign,
+                age,
+                isFemale
+            ];
+
+            // Standardize and dot product
+            let z = MODEL.intercept;
+            for (let i = 0; i < MODEL.features.length; i++) {
+                const f = MODEL.features[i];
+                const normalizedVal = (raw[i] - f.mean) / f.scale;
+                z += f.weight * normalizedVal;
+            }
+
+            // Sigmoid: 1 / (1 + e^-z)
+            const prob = 1.0 / (1.0 + Math.exp(-z));
+            const percentage = (prob * 100).toFixed(1);
+
+            // Update probability display
+            document.getElementById('probPercentage').innerText = percentage + '%';
+            document.getElementById('logitVal').innerText = (z >= 0 ? '+' : '') + z.toFixed(3);
+
+            // Circle progress (circumference is 2 * PI * 76 = 477.5)
+            const circle = document.getElementById('probabilityCircle');
+            const circumference = 477.5;
+            const offset = circumference - (prob * circumference);
+            circle.style.strokeDashoffset = offset;
+
+            // Update color & badges based on probability
+            const badge = document.getElementById('propensityBadge');
+            if (prob >= 0.70) {
+                circle.style.stroke = '#10b981'; // emerald
+                badge.className = "mt-4 px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center space-x-1.5";
+                badge.innerHTML = '<i data-lucide="check-circle" class="w-3.5 h-3.5"></i><span>High Earning Propensity (Active Gigger)</span>';
+            } else if (prob >= 0.50) {
+                circle.style.stroke = '#6366f1'; // indigo
+                badge.className = "mt-4 px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 flex items-center space-x-1.5";
+                badge.innerHTML = '<i data-lucide="activity" class="w-3.5 h-3.5"></i><span>Moderate Earning Propensity (Potential Gigger)</span>';
+            } else {
+                circle.style.stroke = '#f59e0b'; // amber
+                badge.className = "mt-4 px-4 py-1.5 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 flex items-center space-x-1.5";
+                badge.innerHTML = '<i data-lucide="alert-circle" class="w-3.5 h-3.5"></i><span>Low Earning Propensity (Passive Consumer)</span>';
+            }
+
+            // Cluster persona heuristic match
+            let personaTitle = "";
+            let personaSub = "";
+            let actions = [];
+
+            if (skills >= 4 && monetization >= 4) {
+                personaTitle = "Cluster 3: The Power Freelancer";
+                personaSub = "High skills (" + skills + "), strong monetization drive, active across multiple offerings.";
+                actions = [
+                    "Award 'Campus Top Rated' badge to unlock high-ticket client requests.",
+                    "Enable portfolio upload (GitHub, Figma, Dribbble) directly on profile.",
+                    "Offer recurring retainer contracts for student club projects."
+                ];
+            } else if (need >= 7 || isolation >= 5) {
+                personaTitle = "Cluster 1: Stressed Academic Seeker";
+                personaSub = "High emergency study demand and companion deficit needing rapid peer assistance.";
+                actions = [
+                    "Display instant 15-minute tutor matchmaking widget on app home screen.",
+                    "Suggest verified study buddies for upcoming semester end exams.",
+                    "Provide 1-click escrow emergency request broadcast."
+                ];
+            } else if (monetization >= 3 && trust >= 1.5) {
+                personaTitle = "Cluster 0: The Core Peer Gigger";
+                personaSub = "Solid campus trust and willingness to assist peers with tutoring or lab work.";
+                actions = [
+                    "Auto-generate hourly rate suggestions based on peer averages.",
+                    "Notify whenever students in the same department post academic queries.",
+                    "Promote circular rental of unused dorm items or engineering tools."
+                ];
+            } else {
+                personaTitle = "Cluster 2: The Casual Campus Browser";
+                personaSub = "Low current gig interest; visits NeedHub primarily to search or observe deals.";
+                actions = [
+                    "Provide zero-barrier guest browsing with curated campus deals.",
+                    "Offer introductory discount credits for their first peer transaction.",
+                    "Highlight campus security and verified college email protections."
+                ];
+            }
+
+            document.getElementById('personaTitle').innerText = personaTitle;
+            document.getElementById('personaSub').innerText = personaSub;
+
+            let actionHtml = '';
+            actions.forEach(a => {
+                actionHtml += `
+                    <div class="p-2.5 rounded-xl bg-dark-900/60 border border-gray-800 flex items-start space-x-2">
+                        <i data-lucide="check" class="w-4 h-4 text-teal-400 shrink-0 mt-0.5"></i>
+                        <span>${a}</span>
+                    </div>
+                `;
+            });
+            document.getElementById('actionList').innerHTML = actionHtml;
+
+            lucide.createIcons();
+        }
+
+        function resetSimulator() {
+            document.getElementById('input_monetization').value = 4;
+            document.getElementById('input_need').value = 5;
+            document.getElementById('input_trust').value = 2;
+            document.getElementById('input_dorm').value = 2;
+            document.getElementById('input_isolation').value = 3;
+            document.getElementById('input_skills').value = 3;
+            document.getElementById('input_age').value = 19;
+            document.getElementById('select_gender').value = 'male';
+
+            document.getElementById('check_tutoring').checked = true;
+            document.getElementById('check_coding').checked = true;
+            document.getElementById('check_design').checked = false;
+
+            document.getElementById('barrier_discovery').checked = true;
+            document.getElementById('barrier_pricing').checked = true;
+            document.getElementById('barrier_confidence').checked = false;
+            document.getElementById('barrier_time').checked = false;
+
+            runPrediction();
+        }
+
+        // ==================== CHART.JS CHARTS ====================
+        function initModelChart() {
+            window.chartModelsInitialized = true;
+            const ctx = document.getElementById('modelBenchmarkChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Random Forest', 'SVC (RBF)', 'Grad Boosting', 'Logistic Reg', 'Decision Tree', 'Naive Bayes', 'KNN'],
+                    datasets: [
+                        {
+                            label: 'Accuracy (%)',
+                            data: [66.7, 63.9, 63.9, 58.3, 58.3, 55.6, 55.6],
+                            backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                            borderColor: '#6366f1',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        },
+                        {
+                            label: 'F1-Score (%)',
+                            data: [78.6, 77.2, 75.5, 72.0, 69.4, 61.9, 71.7],
+                            backgroundColor: 'rgba(20, 184, 166, 0.7)',
+                            borderColor: '#14b8a6',
+                            borderWidth: 1,
+                            borderRadius: 6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans', size: 11 } }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            min: 40,
+                            max: 100,
+                            grid: { color: 'rgba(255, 255, 255, 0.05)' },
+                            ticks: { color: '#9ca3af', font: { family: 'JetBrains Mono', size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans', size: 10 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function initRadarChart() {
+            window.chartRadarInitialized = true;
+            const ctx = document.getElementById('personaRadarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Gig Willingness', 'Peer Trust', 'Need Intensity', 'Social Isolation', 'Dorm Surplus', 'Skills Count'],
+                    datasets: [
+                        {
+                            label: 'Cluster 0: Core Gigger',
+                            data: [85, 69, 16, 20, 52, 38],
+                            borderColor: '#6366f1',
+                            backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                            pointBackgroundColor: '#6366f1',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Cluster 1: Stressed Seeker',
+                            data: [79, 61, 55, 60, 48, 30],
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                            pointBackgroundColor: '#f59e0b',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Cluster 2: Casual Browser',
+                            data: [61, 38, 19, 24, 37, 28],
+                            borderColor: '#14b8a6',
+                            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+                            pointBackgroundColor: '#14b8a6',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Cluster 3: Power Freelancer',
+                            data: [94, 65, 45, 36, 80, 78],
+                            borderColor: '#ec4899',
+                            backgroundColor: 'rgba(236, 72, 153, 0.2)',
+                            pointBackgroundColor: '#ec4899',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: { color: '#9ca3af', font: { family: 'Plus Jakarta Sans', size: 10 } }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            grid: { color: 'rgba(255, 255, 255, 0.08)' },
+                            angleLines: { color: 'rgba(255, 255, 255, 0.08)' },
+                            pointLabels: { color: '#cbd5e1', font: { family: 'Plus Jakarta Sans', size: 10 } },
+                            ticks: { display: false }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Initialize Simulator on Page Load
+        window.addEventListener('DOMContentLoaded', () => {
+            runPrediction();
+        });
+    </script>
+</body>
+</html>
